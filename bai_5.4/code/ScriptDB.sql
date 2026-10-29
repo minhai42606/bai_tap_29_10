@@ -1,0 +1,58 @@
+﻿CREATE DATABASE IF NOT EXISTS HotelDB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE HotelDB;
+
+CREATE TABLE IF NOT EXISTS Phong (
+    SoPhong VARCHAR(10) PRIMARY KEY,
+    LoaiPhong VARCHAR(50) NOT NULL,
+    GiaTheoGio DECIMAL(18,2) NOT NULL,
+    TrangThai VARCHAR(30) NOT NULL DEFAULT 'Trống'
+);
+
+CREATE TABLE IF NOT EXISTS KhachHang (
+    MaKH INT AUTO_INCREMENT PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    CCCD VARCHAR(20) UNIQUE NOT NULL,
+    SoDienThoai VARCHAR(15)
+);
+
+CREATE TABLE IF NOT EXISTS DichVu (
+    MaDV INT AUTO_INCREMENT PRIMARY KEY,
+    TenDV VARCHAR(100) NOT NULL,
+    DonGia DECIMAL(18,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS PhieuDatPhong (
+    MaPhieu INT AUTO_INCREMENT PRIMARY KEY,
+    SoPhong VARCHAR(10) NOT NULL,
+    MaKH INT NOT NULL,
+    NgayNhanPhong DATETIME NOT NULL,
+    NgayTraPhong DATETIME NULL,
+    TongTienThanhToan DECIMAL(18,2) DEFAULT 0,
+    FOREIGN KEY (SoPhong) REFERENCES Phong(SoPhong),
+    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH)
+);
+
+CREATE TABLE IF NOT EXISTS SuDungDichVu (
+    MaPhieu INT NOT NULL,
+    MaDV INT NOT NULL,phong
+    SoLuong INT NOT NULL,
+    ThoiGian DATETIME NOT NULL,
+    PRIMARY KEY (MaPhieu, MaDV, ThoiGian),
+    FOREIGN KEY (MaPhieu) REFERENCES PhieuDatPhong(MaPhieu),
+    FOREIGN KEY (MaDV) REFERENCES DichVu(MaDV)
+);
+
+USE HotelDB;
+
+INSERT INTO Phong (SoPhong, LoaiPhong, GiaTheoGio, TrangThai) VALUES
+('P101', 'Đơn', 100000, 'Trống'),
+('P102', 'Đơn', 100000, 'Trống'),
+('P201', 'Đôi', 180000, 'Trống'),
+('P202', 'Đôi', 180000, 'Trống'),
+('P301', 'VIP', 350000, 'Trống');
+
+INSERT INTO DichVu (TenDV, DonGia) VALUES
+('Nước suối', 15000),
+('Coca Cola', 20000),
+('Mì tôm trứng', 30000),
+('Giặt ủi', 50000);
